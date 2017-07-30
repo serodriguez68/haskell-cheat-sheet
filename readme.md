@@ -17,13 +17,13 @@ WORK IN PROGRESS.
 + Haskell doesn't use parentheses to separate functions from their arguments. In both function definition and use, we use spaces instead: it's `f 3` rather than `f(3)`
 
 ```haskell
--- | 1. Define function f whose input is Int and output is Int
---   2. f gets an argument x and the definition of the function is x ^2 
+-- 1. Define function f whose input is Int and output is Int
+-- 2. f gets an argument x and the definition of the function is x ^2 
 f :: Int -> Int
 f x = x^2
 
--- | 1. Define function g which has 2 inputs of type Int and Int and output of type Int
---   2. g gets arguments x and y and the definition of the funtion is x * y 
+-- 1. Define function g which has 2 inputs of type Int and Int and output of type Int
+-- 2. g gets arguments x and y and the definition of the funtion is x * y 
 g :: Int -> Int -> Int
 g x y = x * y
 ```
