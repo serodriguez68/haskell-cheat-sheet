@@ -1,6 +1,6 @@
 
 THIS IS WORK IN PROGRESS.
-THIS IS HEAVILLY INSPIRED ON UNIVERISTY OF MELBOURNE'S SUBJECT ON MODELS OF COMPUTATION (COMP30026)
+THIS IS HEAVILLY INSPIRED ON UNIVERISTY OF MELBOURNE'S SUBJECT ON MODELS OF COMPUTATION (COMP30026), give credit to them.
 
 # Characteristics of Haskell
 + Strong Type Language
@@ -110,6 +110,8 @@ evens :: Int -> [Int]
 evens 0 = []
 evens n = [2,4..n*2]
 ```
+* Haskell lists do not provide random access, most list functions and operations [(including `length` and `!!`)](#pre-defined-list-functions) run in linear time in the length of the list.
+* Haskell does support an array data structure providing random access, but we won't have a need for it.
 
 # Recursion with lists
 + Recursive functions with lists as arguments often need to handle 2 cases:
@@ -160,6 +162,65 @@ There are some common use functions already defined by Haskell.
 + `null` returns `True` if a list is empty, `False` otherwise.
 + `[1,2,3,4] !! 2` returns the nth element in a list (return 3 in this case)
 + The `++` operator joins to lists together `[1,2] ++ [3,4]`.
++ `head` and `tail` separate a list into its first and remaining elements:
+```haskell
+     1  [2,  3,  4,  5,  6,  7,  8,  9,  10]
+head --'   <--------------tail-------------->
+```
+* `last` and `init` do just the opposite:
+```haskell
+[1,  2,  3,  4,  5,  6,  7,  8,  9]  10
+ <---------------init------------>   '-- last
+```
+* `take n` and `drop n` split the list at an arbitrary point. For example, using 4 for n:
+```haskell
+[1,  2,  3,  4] [5,  6,  7,  8,  9,  10]
+ <--take 4--->   <-------drop 4------->
+```
+
+# Higher-order functions
+* Functions and recieve other functions as arguments or can return functions.
+* Functions that recieve other functions as arguments are called higher-order functions.
+
+## Higher-order functions example
+This concept is better explained through an example:
+A higher-order search function would allow us to provide the function that decides when to stop searching as an argument.
+
+For example, lets say we had the following helper functions available (Note that both functions are of type `Ìnt -> Bool`):
+
+```haskell
+evn :: Int -> Bool
+evn x = (x `mod` 2 == 0)
+​
+big :: Int -> Bool
+big x = (x > 100)
+```
+
+It'd be great if we could pass these functions as arguments to our search function. Something like this:
+```haskell
+Main> search evn [1, 2, 3, 4, 5]
+2
+Main> search big [1, 2, 101, 4, 5]
+101
+Main> search evn [1, 3, 5, 7, 9]
+error: search: no matching item found 
+```
+
+So what we want is a search function that takes two arguments:
+
++ a function which can test each integer in the list and tell us True if there's a match. Its type should be Int -> Bool. Let's call this argument tst.
++ a list of integers to search through, of type [Int]
+
+```haskell
+search :: (Int -> Bool) -> [Int] -> Int
+search tst [] = error "search: no matching number found"
+search tst (x:xs)
+    | tst x     = x
+    | otherwise = search tst xs
+    -- CHECK SERGIO: WHY DOES THIS OTHERWISE STATEMENT DOES NOT GET CONFUSED TRYING TO EVAL tst xs and then passing the result to search?
+```
+__Notice the parenthesis on the first argument of the function `(Int -> Bool)`.__ This indicates that the first argument is of type `Int -> Bool`. No parenthesis will cause the search function to have 3 input arguments `Int, Bool and [Int]`
+
 
 # Types
 + __Integer:__ infinite precision integer type (Store any number, however large (well, until your operating system runs out of memory)
