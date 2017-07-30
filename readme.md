@@ -85,6 +85,39 @@ f x y = (+) x y
 g :: Int -> Int -> Int
 g x y = x `div` y
 ```
+# Lists
++ Lists (i.e _linked lists_): most fundamentas data structure in Haskell
++ Lists are defined entirely by recursion
+    + `x:list` defines a list where `x` is the first element and `list` is the rest of the list (which is itself a list). 
+        + The `:` returns a list? ???? 
+        + e.g `'h':('e':('l':('l':('o':[]))))    
+        + shorthand expression: `['h','e','l','l','o'] ``
+        + In the special case of character lists you can also write: `"hello"`
+* Range notation:
+    * `[1..6]` gives  `[1,2,3,4,5,6]`
+    * `['a'..'e']` gives `['a','b','c','d','e']`
+    * Step size by giving the first two elements and upper bound: `[1,3..6] gives [1,3,5]`
+* Returning a list of certain type in a function
+``` haskell
+evens :: Int -> [Int]
+evens 0 = []
+evens n = [2,4..n*2]
+```
+
+# Pattern matching with lists
++ Recursive functions with lists as arguments often need to handle 2 cases:
+    + Handle the empty list as an input argument
+    + Handle the non-empty list (recursive case): process the first argument in the list an recursively process the rest of the list
+``` haskell
+sum :: [Int] -> Int
+-- Handle empty list
+sum []     = 0
+-- Recursively handle non-empty list
+-- x is the first element, xs is the rest of the list
+sum (x:xs) = x + sum xs
+-- note the parenthesis in sum (x:xs), otherwise the expression would be interpreted as (sum x):xs = x + sum xs which makes no sense
+```
+
 # Types
-+ __Integer:__infinite precision integer type (Store any number, however large (well, until your operating system runs out of memory)
++ __Integer:__ infinite precision integer type (Store any number, however large (well, until your operating system runs out of memory)
 + __Int:__ finite precission 32-bits
