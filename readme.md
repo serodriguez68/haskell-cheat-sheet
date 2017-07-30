@@ -59,13 +59,32 @@ fact n = n * fact (n-1)
 + `otherwise` will always evaluate to true.
 ``` haskell
 fact :: Integer -> Integer
--- note that there is no = sign in the next line
+-- note that there is no = sign on the next line
 fact n
     | n < 0     = 0
     | n == 0    = 1
     | otherwise = n * fact (n-1)
 ```
 
+# Operators
++ Most operators are equal to operators in other programming languages
++ Noteworthy exceptions:
+    - `/` provides float division, even if its arguments are both integers. For integer division (rounding down), use the `div` function, as in `div 16 3` (which will give 5).
+    - `%` is not used as the 'modulo' operator. Use the `mod` function instead, as in `mod 16 3` (which will give 1)   
+    - Using `-` as a unary negative sign (as in `-2`) rather than a subtraction operator (as in `5 - 2`) can cause problems. Always enclose such a negative number in brackets: `(-2)`.
+    - `!` isn't for Boolean negation (not). Use the `not` function instead, as in `not True` (which will `give False`).
+    - `!=` is not defined. For 'not equals', use the `/=` operator.
++ Operators are just functions that get their arguments from both sides of the function (this is called an _infix_ function as opposed to _prefix_ function).
++ To use an infix function (like +) as a prefix function, just enclose it in parentheses:
+``` haskell
+f :: Int -> Int -> Int
+f x y = (+) x y
+```
++ To use a prefix function (like div) as an infix function, just enclose it in backticks ('`' characters):
+``` haskell
+g :: Int -> Int -> Int
+g x y = x `div` y
+```
 # Types
 + __Integer:__infinite precision integer type (Store any number, however large (well, until your operating system runs out of memory)
 + __Int:__ finite precission 32-bits
