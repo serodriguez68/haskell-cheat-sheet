@@ -137,7 +137,7 @@ search x (y:ys)
     where search_x_in_ys = search x ys
 ```
 
-# Helper expressions (using where)
+# Helper expressions using `where`
 + Define variables and functions
 + Avoid repetition of code and computation (CHECK SERGIO: WHY AVOIDS REPETITION OF COMPUTATION?)
 + Use where when (CHECK SERGIO: when to use where instead of another function?)
