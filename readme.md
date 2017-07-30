@@ -1,4 +1,6 @@
-WORK IN PROGRESS.
+
+THIS IS WORK IN PROGRESS.
+THIS IS HEAVILLY INSPIRED ON UNIVERISTY OF MELBOURNE'S SUBJECT ON MODELS OF COMPUTATION (COMP30026)
 
 # Characteristics of Haskell
 + Strong Type Language
@@ -150,6 +152,14 @@ maximum (x:xs)
     | otherwise = maxxs
     where maxxs = maximum xs
 ```
+
+# Pre-defined list functions
+There are some common use functions already defined by Haskell.
++ `sum`, `maximum`, `length`
++ `elem 3 [2,4,5]` returns `True` if the first argument is contained on the list.
++ `null` returns `True` if a list is empty, `False` otherwise.
++ `[1,2,3,4] !! 2` returns the nth element in a list (return 3 in this case)
++ The `++` operator joins to lists together `[1,2] ++ [3,4]`.
 
 # Types
 + __Integer:__ infinite precision integer type (Store any number, however large (well, until your operating system runs out of memory)
