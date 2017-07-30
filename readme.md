@@ -1,9 +1,13 @@
 WORK IN PROGRESS.
 
 # Characteristics of Haskell
-+ Strong Type
++ Strong Type Language
 + Compiled (e.g of compiler ghc)
-+ Extension of files .hs
++ Extension of files is .hs
++ CHECK SERGIO: DOES INDENTATION MATTER?
++ CHECK SERGIO: USE OF PARENTHESIS? why does this doesn't work?
+    + `mod(2016 100)`
+    + `search(x y:ys)`
 + ghci -> Interactive environment for Haskell
 + It is possible to run a Haskell program as a standalone executable if the special `main` function is defined.
 + There is no native concept of sequence, branching or loops.
@@ -89,10 +93,11 @@ g x y = x `div` y
 + Lists (i.e _linked lists_): most fundamentas data structure in Haskell
 + Lists are defined entirely by recursion
     + `x:list` defines a list where `x` is the first element and `list` is the rest of the list (which is itself a list). 
-        + The `:` returns a list? ???? 
-        + e.g `'h':('e':('l':('l':('o':[]))))    
-        + shorthand expression: `['h','e','l','l','o'] ``
+        + The `:` returns a list? CHECK SERGIO???? 
+        + e.g `'h':('e':('l':('l':('o':[]))))`    
+        + shorthand expression: `['h','e','l','l','o'] `
         + In the special case of character lists you can also write: `"hello"`
+* There is a convention on list notation among Haskell programmers: if `x` is an element, `xs` is a list of such elements and `xss` is a list of lists. 
 * Range notation:
     * `[1..6]` gives  `[1,2,3,4,5,6]`
     * `['a'..'e']` gives `['a','b','c','d','e']`
@@ -104,10 +109,10 @@ evens 0 = []
 evens n = [2,4..n*2]
 ```
 
-# Pattern matching with lists
+# Recursion with lists
 + Recursive functions with lists as arguments often need to handle 2 cases:
-    + Handle the empty list as an input argument
-    + Handle the non-empty list (recursive case): process the first argument in the list an recursively process the rest of the list
+    + Base cases: Handle the empty list and/or the single element list.
+    + Handle the non-base case list recursively: process the first argument in the list an recursively process the rest of the list.
 ``` haskell
 sum :: [Int] -> Int
 -- Handle empty list
@@ -115,7 +120,35 @@ sum []     = 0
 -- Recursively handle non-empty list
 -- x is the first element, xs is the rest of the list
 sum (x:xs) = x + sum xs
--- note the parenthesis in sum (x:xs), otherwise the expression would be interpreted as (sum x):xs = x + sum xs which makes no sense
+-- note the parenthesis in sum (x:xs), otherwise the expression would be interpreted as (sum x):xs = x + sum xs, which makes no sense
+```
+
+```haskell
+search :: Int -> [Int] -> Bool
+-- Base case 1: Handle empty list
+search x [] = False
+-- Base case 2: Handle one element list
+search x [y] = (x == y)
+-- Recursively handle all other lists
+search x (y:ys)
+    | x == y = True
+    | otherwise = search_x_in_ys
+    -- The where helper is explained in other section
+    where search_x_in_ys = search x ys
+```
+
+# Helper expressions (using where)
++ Define variables and functions
++ Avoid repetition of code and computation (CHECK SERGIO: WHY AVOIDS REPETITION OF COMPUTATION?)
++ Use where when (CHECK SERGIO: when to use where instead of another function?)
+```haskell
+maximum :: [Int] -> Int
+-- maximum [x] is a pattern to match a list of a single element
+maximum [x] = x
+maximum (x:xs)
+    | x > maxxs = x
+    | otherwise = maxxs
+    where maxxs = maximum xs
 ```
 
 # Types
