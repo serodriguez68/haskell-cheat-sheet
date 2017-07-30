@@ -27,3 +27,44 @@ f x = x^2
 g :: Int -> Int -> Int
 g x y = x * y
 ```
+
+# Recurssion
++ The way of doing iteration in Haskell.
++ __Always__ make sure that your recurssion eventually converges.
+```haskell
+fact :: Integer -> Integer
+fact 0 = 1
+fact n = n * fact (n-1)
+-- Parenthesis around (n-1) are used because a function has higher precedence than a substraction. 
+-- Without parenthesis this would be interpreted as `(f n) - 1
+```
+
+# Pattern matching
++ A function definition can have multiple pattern definitions (for example, in `fact 0` 0 is a pattern to match and in `fact n` n is a pattern to match)
++ Patterns are evaluated in top-down order and only the FIRST matched pattern is excecuted
+    + If no patterns match => RUNTIME ERROR 
+    + BEST PRACTICE: make your patterns mutually exclusive + collectively exhaustive.
+    + If no pattern is matched => Infinite loop.
+    ```haskell
+    fact :: Integer -> Integer
+    -- Pattern 1
+    fact 0 = 1
+    -- Pattern 2
+    fact n = n * fact (n-1)
+    ```
+
+# Guards
++ Definition of functions with multiple cases using booleans.
++ Guards are evaluated in top-down order and only the FIRST matched guard is excecuted.
++ `otherwise` will always evaluate to true.
+``` haskell
+fact :: Integer -> Integer
+fact n
+    | n < 0     = 0
+    | n == 0    = 1
+    | otherwise = n * fact (n-1)
+```
+
+# Types
++ __Integer:__infinite precision integer type (Store any number, however large (well, until your operating system runs out of memory)
++ __Int:__ finite precission 32-bits
