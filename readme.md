@@ -59,6 +59,7 @@ fact n = n * fact (n-1)
 + `otherwise` will always evaluate to true.
 ``` haskell
 fact :: Integer -> Integer
+-- note that there is no = sign in the next line
 fact n
     | n < 0     = 0
     | n == 0    = 1
