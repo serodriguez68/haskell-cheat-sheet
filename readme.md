@@ -213,11 +213,13 @@ qsort (pivot:others) = (qsort lowers) ++ [pivot] ++ (qsort highers)
 nub [1,1,3,3,2,1]
 [1,3,2]
 ```
+    
     * `delete x mylist` removes the first occurence of x of _mylist_ 
 ```haskell
 delete 3 [2,3,4,3]
 [2,4,3]
 ```
+    
     - The `\\` operator is an _infix_ operator that deletes each element of the right list from the left list (each element is deleted once, see example)
 ```haskell
 [1,2,3,2] \\ [2,1] 
