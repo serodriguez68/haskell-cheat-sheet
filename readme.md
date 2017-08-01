@@ -6,21 +6,29 @@ THIS IS HEAVILLY INSPIRED ON UNIVERISTY OF MELBOURNE'S SUBJECT ON MODELS OF COMP
 + Strong Type Language
 + Compiled (e.g of compiler ghc)
 + Extension of files is .hs
-+ CHECK SERGIO: DOES INDENTATION MATTER?
-+ CHECK SERGIO: USE OF PARENTHESIS? why does this doesn't work?
-    + `mod(2016 100)`
-    + `search(x y:ys)`
++ Indentation matters and determines scoping
++ A note on parenthesis:
+    + Parenthesis in Haskell have the job of organizing how expressions are executed
+    + Parenthesis CANNOT be used to pass in arguments to a function 
+    + `mod 2016 100` means `2016` and `100` are arguments for mod
+    + Given that `mysum` is a function that takes 2 int arguments and adds them up, `mysum (1+4) 5` means: Eval `1+4` and use the result.
+    +  Given that `search` is a function that gets 2 arguments: the first argument is a function and the second is a list
+        +  `search tst xs` means: `tst` and `xs` are arguments for search.  This will be ok according to `search` definition
+        +  `search(tst xs)` means: eval `tst` with `xs` as argument and use the answer as a single argument for `search`.  This will most likely __blow up__ because because you are passing the wrong arguments to both `tst` and `search` functions.
 + ghci -> Interactive environment for Haskell
 + It is possible to run a Haskell program as a standalone executable if the special `main` function is defined.
 + There is no native concept of sequence, branching or loops.
 + A Haskell program is one big expression to be evaluated with determined inputs.
     + Small-scale functions get combined to form larger-scale functions. Larger-scale functions are combined in the same way to form even larger functions, until eventually we have a complete program.
     + A simple way to combine functions is to take the result of one function application and make that the input argument of another. 
+* By convention, CamelCase is used for multiple words.
 
 # Functions in Haskell
 + Functions are __pure__: no side effects, have no state
 + Functions are defined using __expressions__ (as opposed to sequence of steps like OO programming languages).
 + Haskell doesn't use parentheses to separate functions from their arguments. In both function definition and use, we use spaces instead: it's `f 3` rather than `f(3)`
+
+
 
 ```haskell
 -- 1. Define function f whose input is Int and output is Int
@@ -58,6 +66,8 @@ fact n = n * fact (n-1)
     -- Pattern 2
     fact n = n * fact (n-1)
     ```
++ In pattern matching the `_` is used to match everything without giving importance to what the argument has (it can't be used in the expression).  For example `myFunc _ 0 =  error "bla bla"` means that no matter what the first argument is, if the second argument is 0, then `error: "bla bla"`
+    + `myFunc _ 0` is equivalent to `myFunc x 0`; however, the use of a `_` is used to indicate others that the first argument should not be used on the expression for that pattern.
 
 # Guards
 + Definition of functions with multiple cases using booleans.
@@ -95,8 +105,8 @@ g x y = x `div` y
 + Lists (i.e _linked lists_): most fundamentas data structure in Haskell
 + Lists are defined entirely by recursion
     + `x:list` defines a list where `x` is the first element and `list` is the rest of the list (which is itself a list). 
-        + The `:` returns a list? CHECK SERGIO???? 
-        + e.g `'h':('e':('l':('l':('o':[]))))`    
+        + The `:` is an _infix_ function that gets an element and a list and returns a list.
+        + e.g `'h':('e':('l':('l':('o':[]))))`  or `h:e:l:l:o:[]`  
         + shorthand expression: `['h','e','l','l','o'] `
         + In the special case of character lists you can also write: `"hello"`
 * There is a convention on list notation among Haskell programmers: if `x` is an element, `xs` is a list of such elements and `xss` is a list of lists. 
@@ -129,10 +139,8 @@ sum (x:xs) = x + sum xs
 
 ```haskell
 search :: Int -> [Int] -> Bool
--- Base case 1: Handle empty list
+-- base case
 search x [] = False
--- Base case 2: Handle one element list
-search x [y] = (x == y)
 -- Recursively handle all other lists
 search x (y:ys)
     | x == y = True
@@ -144,7 +152,7 @@ search x (y:ys)
 # Helper expressions using `where`
 + Define variables and functions
 + Avoid repetition of code and computation (CHECK SERGIO: WHY AVOIDS REPETITION OF COMPUTATION?)
-+ Use where when (CHECK SERGIO: when to use where instead of another function?)
++ Use where inside a function (as opposed to declaring a global function a using inside other function) when the inner (where) function does not mean anything for the global scope.
 ```haskell
 maximum :: [Int] -> Int
 -- maximum [x] is a pattern to match a list of a single element
@@ -217,11 +225,30 @@ search tst [] = error "search: no matching number found"
 search tst (x:xs)
     | tst x     = x
     | otherwise = search tst xs
-    -- CHECK SERGIO: WHY DOES THIS OTHERWISE STATEMENT DOES NOT GET CONFUSED TRYING TO EVAL tst xs and then passing the result to search?
 ```
 __Notice the parenthesis on the first argument of the function `(Int -> Bool)`.__ This indicates that the first argument is of type `Int -> Bool`. No parenthesis will cause the search function to have 3 input arguments `Int, Bool and [Int]`
 
+# Using the ghci console
++ :t gives the type of whatever is given as argument
+```haskell
+-- given g
+g :: Int -> Int -> Int
+g x y = x * y
+-- then 
+:t g
+-- #=> g :: Int -> Int -> Int
+````
 
 # Types
 + __Integer:__ infinite precision integer type (Store any number, however large (well, until your operating system runs out of memory)
 + __Int:__ finite precission 32-bits
+
+
+
+
+allsearch::(Int -> Bool) -> [Int] -> [Int]
+allsearch _ [] = []
+allsearch test (x:xs)
+    -- this line is building up a list recursively
+    | test x = x : allsearch test xs
+    | otherwise = allsearch test xs
