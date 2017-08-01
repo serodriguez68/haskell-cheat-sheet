@@ -28,8 +28,6 @@ THIS IS HEAVILLY INSPIRED ON UNIVERISTY OF MELBOURNE'S SUBJECT ON MODELS OF COMP
 + Functions are defined using __expressions__ (as opposed to sequence of steps like OO programming languages).
 + Haskell doesn't use parentheses to separate functions from their arguments. In both function definition and use, we use spaces instead: it's `f 3` rather than `f(3)`
 
-
-
 ```haskell
 -- 1. Define function f whose input is Int and output is Int
 -- 2. f gets an argument x and the definition of the function is x ^2 
@@ -160,7 +158,9 @@ maximum [x] = x
 maximum (x:xs)
     | x > maxxs = x
     | otherwise = maxxs
-    where maxxs = maximum xs
+    where 
+        maxxs = maximum xs
+        -- Other helper expresions (e.g minxs = minimum xs )
 ```
 
 # Pre-defined list functions
@@ -185,6 +185,64 @@ head --'   <--------------tail-------------->
 [1,  2,  3,  4] [5,  6,  7,  8,  9,  10]
  <--take 4--->   <-------drop 4------->
 ```
+
+* `filter` is a very useful pre-defined [higher-order function](#higher-order-functions). Takes in a _list_ and a _test function_ and filters out all of the elements for wich the _test function_ doesn't return __true__.
+
+```haskell
+-- Yes.. this is quicksort in 5 lines of code
+qsort :: [Int] -> [Int]
+qsort [] = []
+qsort (pivot:others) = (qsort lowers) ++ [pivot] ++ (qsort highers)
+    where lowers  = filter (<pivot)  others
+          highers = filter (>=pivot) others
+```
+
+## Pre-defined functions included in the `Data.List` Haskell Module
+* Haskell functions are collected and packaged in modules. The module that is loaded by default when you start a Haskell program is called the _Prelude_. The _Prelude_ contains definitions for everything that is provided by default for you: everything from `Int` and `+` to `maximum` and `filter`.
+* To use this functions you need to `import Data.List`.
+*  Some important functions are: 
+    * `sort`
+    * `group` separates a list into sublists of adjacent, matching numbers.
+```haskell
+ group [1,1,3,3,2,1]
+ [[1,1],[3,3],[2],[1]]
+```
+
+    * `nub` removes duplicates
+```haskell
+nub [1,1,3,3,2,1]
+[1,3,2]
+```
+    * `delete x mylist` removes the first occurence of x of _mylist_ 
+```haskell
+delete 3 [2,3,4,3]
+[2,4,3]
+```
+    - The `\\` operator is an _infix_ operator that deletes each element of the right list from the left list (each element is deleted once, see example)
+```haskell
+[1,2,3,2] \\ [2,1] 
+[3,2]
+```
+
+* You can use these functions as building blocks to define other useful functions.
+```haskell
+dups :: [Int] -> [Int]
+dups xs = xs \\ (nub xs)
+
+dups [1,1,2,3]
+[1]
+
+groupAll :: [Int] -> [[Int]]
+groupAll xs = group (sort xs)
+
+groupAll[1,2,3,1,2,3]
+[[1,1],[2,2],[3,3]]
+
+-- as opposed to 
+group[1,2,3,1,2,3]
+[[1],[2],[3],[1],[2],[3]]
+```
+
 
 # Higher-order functions
 * Functions and recieve other functions as arguments or can return functions.
@@ -237,18 +295,8 @@ g x y = x * y
 -- then 
 :t g
 -- #=> g :: Int -> Int -> Int
-````
+```
 
 # Types
 + __Integer:__ infinite precision integer type (Store any number, however large (well, until your operating system runs out of memory)
 + __Int:__ finite precission 32-bits
-
-
-
-
-allsearch::(Int -> Bool) -> [Int] -> [Int]
-allsearch _ [] = []
-allsearch test (x:xs)
-    -- this line is building up a list recursively
-    | test x = x : allsearch test xs
-    | otherwise = allsearch test xs
