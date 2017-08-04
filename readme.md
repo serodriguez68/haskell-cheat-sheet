@@ -165,7 +165,7 @@ maximum (x:xs)
 
 # Pre-defined list functions
 There are some common use functions already defined by Haskell.
-+ `sum`, `maximum`, `length`
++ `sum`, `maximum`, `length`, `product`
 + `elem 3 [2,4,5]` returns `True` if the first argument is contained on the list.
 + `null` returns `True` if a list is empty, `False` otherwise.
 + `[1,2,3,4] !! 2` returns the nth element in a list (return 3 in this case)
@@ -187,6 +187,7 @@ head --'   <--------------tail-------------->
 ```
 
 * `filter` is a very useful pre-defined [higher-order function](#higher-order-functions). Takes in a _list_ and a _test function_ and filters out all of the elements for wich the _test function_ doesn't return __true__.
+* `map` is another very useful pre-defined [higher-order function](#higher-order-functions). Takis in a _list_ and a _function to apply_ and applies it to every element of the list, returning a new list.
 
 ```haskell
 -- Yes.. this is quicksort in 5 lines of code
