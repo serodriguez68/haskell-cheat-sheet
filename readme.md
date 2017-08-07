@@ -101,6 +101,7 @@ g x y = x `div` y
 ```
 # Lists
 + Lists (i.e _linked lists_): most fundamentas data structure in Haskell
++ Store elements __of the same type.__ (If you don't want this, use a tuple)
 + Lists are defined entirely by recursion
     + `x:list` defines a list where `x` is the first element and `list` is the rest of the list (which is itself a list). 
         + The `:` is an _infix_ function that gets an element and a list and returns a list.
@@ -300,6 +301,26 @@ g x y = x * y
 -- #=> g :: Int -> Int -> Int
 ```
 
+# Tuples
++ A tuple lets you store a fixed number of values of different (but fixed) types
+
 # Types
++ Haskell is strongly typed.
++ All type errors are caught at compilation time due to it's powerfull type inference engine.
++ Types: Int, Integer, Bool, Char, String, Float, Double, [...], [[...]].
+    +   The last 2 mean a list of any other type and a list of lists of any other type.
 + __Integer:__ infinite precision integer type (Store any number, however large (well, until your operating system runs out of memory)
 + __Int:__ finite precission 32-bits
++ Thinkd of `[]` _lists_  and `()` _tuples_ as type constructors.
+    +  e.g `[Int]` builds a new type _list of integers._
+-  __String__ is a type _synonym_ for `[Char]`. Both ways of defining ir are interchangable.
+    - You can apply all list functions to a `String` because it is a list of chars.   
+* __Defining type synonyms__
+    - `type Pair = (Int,Int)
+* __Polymorphism__
+    * In the following example `a` is a _type variable_. It means `a` is of any type.   
+```haskell
+len :: [a] -> Int
+len []     = 0
+len (x:xs) = 1 + len xs
+```
