@@ -408,3 +408,34 @@ data MyBool = MyTrue | MyFalse
 data List a = ListNode a (List a) | ListEnd
     deriving (Eq, Show)
 ```
+
+## Example: Binary tree data type
+```haskell
+data Tree a = Node a (Tree a) (Tree a) | Empty
+    deriving Show
+
+-- let mytree = Node "stump" Empty Empty
+-- let mytree2 = Node "trunk" Empty (Node "branch" (Node "leaf" Empty Empty) Empty)
+
+size :: Tree a -> Int
+size Empty        = 0
+size (Node x l r) = 1 + size l + size r
+
+height::Tree a -> Int
+height Empty = 0
+height (Node a l r) = 1 + (max (height l) (height r))
+
+search :: Ord a => a -> Tree a -> Bool
+search x Empty = False
+search x (Node y l r)
+    | x == y = True
+    | x < y  = search x l
+    | x > y  = search x r
+
+insert::Ord a => a -> Tree a -> Tree a
+insert x Empty = Node x Empty Empty
+insert x (Node y l r)
+    | x == y = (Node y l r)
+    | x < y = Node y (insert x l) r
+    | x > y = Node y l (insert x r)
+```
