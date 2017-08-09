@@ -316,11 +316,95 @@ g x y = x * y
 -  __String__ is a type _synonym_ for `[Char]`. Both ways of defining ir are interchangable.
     - You can apply all list functions to a `String` because it is a list of chars.   
 * __Defining type synonyms__
-    - `type Pair = (Int,Int)
+    - `type Pair = (Int,Int)`
 * __Polymorphism__
     * In the following example `a` is a _type variable_. It means `a` is of any type.   
 ```haskell
+-- dummy example: calculates the length of any list
 len :: [a] -> Int
 len []     = 0
 len (x:xs) = 1 + len xs
+
+-- dummy example: reverses any list
+rev :: [a] -> [a]
+rev []     = []
+rev (x:xs) = rev xs ++ [x]
+```
+* The following example introduces a second _type variable_ `b`, which means that we can declare types with any number of _type variables_ but still make sense of which type goes where.
+```haskell
+map :: (a -> b) -> [a] -> [b]
+map f []     = []
+map f (x:xs) = f x : map f xs
+```
+
+# Type Classes
+* Sometimes we need types that are polymorphic but at the same time restricted to a subset of types which make sense for a particular function (e.g for only numbers).  
+* A _type class_ is a grouping of types that share common behaviour 
+    * Types that can be `+, - , *, /` are of type class `Num`
+    * Types that can be ordered `>, < etc` are of type class `Òrd`.
+    * Types that can be say equivalent `==` are of type `Eq`.
+    * Types that can be printed to the ghci as a string representation are of type class `Show`
+* Syntax for polymorphism with type classes
+```haskell
+Num a => [a] -> a
+Ord a => [a] -> a
+```
+
+# Defining Data types
+* The following example creates a custom type `MyBool` that has 2 possible values `MyTrue` and `MyFalse`
+* Once defined, it can be used for functions and pattern matching
+```haskell
+data MyBool = MyTrue | MyFalse
+
+mynot :: MyBool -> MyBool
+mynot MyTrue = MyFalse
+mynot MyFalse = MyTrue
+```
+
+## Data constructors
+* Point is the name of the Data type
+* Pt is a _data constructor_
+* Float Float are the arguments of the data constructor
+```haskell
+data Point = Pt Float Float
+
+-- invert: reflect a point (x,y) in the line x = y
+invert :: Point -> Point
+invert (Pt x y) = Pt y x
+```
+More often than not, the data constructor name is equal to the data type name
+
+## Recursive data types
+* A home-made implementation of an Intlist
+```haskell
+data List = ListNode Int List | ListEnd
+-- ListNode 20 (ListNode 10 ListEnd) (a List containing 20 and 10)
+```
+* List can be constructed in 2 ways:
+    * `ListNode` constructor takes 2 args: an Int and another list
+    * `ListEnd` constructor which is a nullary constructor.
+
+## Type constructors
+* We can expand the previous example to build lists of any type
+```haskell
+data List a = ListNode a (List a) | ListEnd
+-- List Int is now a type that matches the previous example
+
+-- Enforcing a data class on a function made up by a type constructor
+mymaximum :: Ord a => List a -> a
+mymaximum (ListNode x ListEnd) = x
+mymaximum (ListNode x xs)
+    | x > mymaximum xs = x
+    | otherwise = mymaximum xs
+```
+
+## Add [type classes](#type-classes) to our custom data types (Deriving)
++ We can make our custom data type to _derive_ from an already built in _type class_
++ The custom data type will inherit behaviour from it's [type class](#type-classes)
+```haskell
+data MyBool = MyTrue | MyFalse
+    deriving (Eq, Show)
+
+data List a = ListNode a (List a) | ListEnd
+    deriving (Eq, Show)
 ```
