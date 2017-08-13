@@ -200,7 +200,7 @@ qsort (pivot:others) = (qsort lowers) ++ [pivot] ++ (qsort highers)
 ```
 
 ## Pre-defined functions included in the `Data.List` Haskell Module
-* Haskell functions are collected and packaged in modules. The module that is loaded by default when you start a Haskell program is called the _Prelude_. The _Prelude_ contains definitions for everything that is provided by default for you: everything from `Int` and `+` to `maximum` and `filter`.
+* Haskell functions are collected and packaged in modules. The module that is loaded by default when you start a Haskell program is called the _Prelude_. The [Prelude](http://teaching.csse.uwa.edu.au/units/CITS3211/lectureNotes/tourofprelude.html) contains definitions for everything that is provided by default for you: everything from `Int` and `+` to `maximum` and `filter`.
 * To use this functions you need to `import Data.List`.
 *  Some important functions are: 
     * `sort`
@@ -211,6 +211,7 @@ qsort (pivot:others) = (qsort lowers) ++ [pivot] ++ (qsort highers)
 ```
 
     * `nub` removes duplicates
+    
 ```haskell
 nub [1,1,3,3,2,1]
 [1,3,2]
@@ -337,7 +338,7 @@ map f []     = []
 map f (x:xs) = f x : map f xs
 ```
 
-# Type Classes
+# Type Classes (Parametric Polymorphism)
 * Sometimes we need types that are polymorphic but at the same time restricted to a subset of types which make sense for a particular function (e.g for only numbers).  
 * A _type class_ is a grouping of types that share common behaviour 
     * Types that can be `+, - , *, /` are of type class `Num`
@@ -438,4 +439,26 @@ insert x (Node y l r)
     | x == y = (Node y l r)
     | x < y = Node y (insert x l) r
     | x > y = Node y l (insert x r)
+```
+
+## Example: Binary search tree
+```haskell
+data BinTree a
+   = Void
+   | Node a (BinTree a) (BinTree a)
+     deriving Show
+
+insertbst :: (Ord a) => a -> BinTree a -> BinTree a
+insertbst x Void = Node x Void Void
+insertbst x (Node y l r)
+    | x >= y = Node y l (insertbst x r)
+    | x < y = Node y (insertbst x l) r
+
+buildbst :: (Ord a) => [a] -> BinTree a
+buildbst [] = Void
+buildbst (xs) = insertbst (last xs) (buildbst (init xs)) 
+
+contents ::BinTree a -> [a]
+contents Void = []
+contents (Node x l r) = (contents l)++[x]++(contents r)
 ```
